@@ -1,0 +1,34 @@
+{
+    "name": "ajtarragona/anicom-client",
+    "description": "Client d'accés al WS ANICOM de Gencat",
+    "keywords" : ["laravel5","laravel","anicom","gencat","animals"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Txomin Medrano Martorell",
+            "email": "tmedrano@tarragona.cat"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.0.0",
+        "laravel/framework": "^6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ajtarragona\\Accede\\": "./src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ajtarragona\\Anicom\\AnicomServiceProvider"
+            ],
+            "aliases": {
+                "Anicom" : "Ajtarragona\\Anicom\\Facades\\Anicom"
+        
+            }
+        }
+    }
+}
