@@ -17,7 +17,7 @@ class AnicomBackend
     {
     	if (!config("anicom.backend")) {
     		 $error=__("Oops! Anicom backend is disabled");
-    		 return view("anicom-client::erroraccede",compact('error'));
+    		 return view("anicom-client::error",compact('error'));
         }
 
         return $next($request);
