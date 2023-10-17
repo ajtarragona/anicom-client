@@ -29,17 +29,14 @@ Pots configurar el paquet a través de l'arxiu `.env` de l'aplicació. Aquests s
 Paràmetre |  Descripció  | Valors
 --- | --- | --- 
 ANICOM_ENVIRONMENT | Entorn pre-producció o producció | <ins>`pre`</ins> / `pro`
-
 ANICOM_URL_PRO | Url base de la API en producció  | 
 ANICOM_USER_PRO | Usuari de producció |  
 ANICOM_PASSWORD_PRO  | Password de producció | 
 ANICOM_ID_REGISTRO_PRO  | ID de registre  de producció |  proporcionat per ANICOM
-
 ANICOM_URL_PRE | Url base de la API en pre-producció  | 
 ANICOM_USER_PRE | Usuari de pre-producció |  
 ANICOM_PASSWORD_PRE  | Password de pre-producció | 
 ANICOM_ID_REGISTRO_PRE  | ID de registre  de pre-producció |  proporcionat per ANICOM
-
 ANICOM_DEBUG  | Mode debug (habilita més logs) | `true` / <ins>`false`</ins>
 
 
