@@ -4,14 +4,14 @@ namespace Ajtarragona\Anicom\Models;
 
 use SoapVar;
 
-class AnicomStoreRequest extends AnicomRequest{
+class AnicomUpdateRequest extends AnicomRequest{
 
 		
-        protected $body_name="altaV2";
+        protected $body_name="modificacioV2";
         protected $xml_params=true;
 
-        protected $extern_params=[];
-        
+        protected $extern_params=['idPk','nivell'];
+
         public function __construct( $parametres=[] )
         {
             parent::__construct($parametres);
@@ -28,26 +28,25 @@ class AnicomStoreRequest extends AnicomRequest{
                 }
             }
 
-            $ocurrencies =[
+            $registre =[
                 'varArray'=>$params,
                 'nivell' => 1,
                 "idOcurrencia" => -1,
-                "idOcurrenciaPare" => -1,
+                "idRegistre" => $this->idRegistre,
             ];
 
             foreach($this->extern_params as $key){
                 if(isset($this->parametres[$key])){
-                    $ocurrencies[$key]=$this->parametres[$key];
+                    $registre[$key]=$this->parametres[$key];
                 }
             }
             
             
             $ret= [
-                "registre" => [
-                    "varOcurrencies"=>$ocurrencies,
-                    "idRegistre" => $this->idRegistre,
-                ]
+                "registre" => $registre,
+                   
             ];
+
 
           
        

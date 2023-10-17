@@ -3,7 +3,6 @@
 return [
 	
 	'debug' => env('ANICOM_DEBUG',false),
-	"backend" => env('ANICOM_BACKEND',false),
 	'environment' => env('ANICOM_ENVIRONMENT','pre'),
 	'environments'=>[
 		'pro'=>[

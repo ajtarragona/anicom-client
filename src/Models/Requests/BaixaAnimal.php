@@ -2,9 +2,11 @@
 
 namespace Ajtarragona\Anicom\Models\Requests;
 
+use Ajtarragona\Anicom\Models\AnicomUpdateRequest;
 use Carbon\Carbon;
 
-class BaixaAnimal extends AltaAnimal
+
+class BaixaAnimal extends AnicomUpdateRequest 
 {
     
     protected $body_name="modificacioV2";
@@ -20,7 +22,7 @@ class BaixaAnimal extends AltaAnimal
             'data_baixa'=>$data_baixa?$data_baixa:Carbon::now()->format('d/m/Y'),
             'motiu_baixa'=>$motiu,
             'acreditacio_mort'=>'S',
-            'idPk'=>$id_animal,
+            'idPk'=>$id_animal."N",
             'nivell'=>46932
         ];
            

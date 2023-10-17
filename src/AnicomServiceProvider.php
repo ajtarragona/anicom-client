@@ -17,11 +17,12 @@ class AnicomServiceProvider extends ServiceProvider
         
   
         //vistas
-        $this->loadViewsFrom(__DIR__.'/resources/views', 'anicom-client');
+        // $this->loadViewsFrom(__DIR__.'/resources/views', 'anicom-client');
         
         //cargo rutas
-        $this->loadRoutesFrom(__DIR__.'/routes.php');
+        // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
+        // $this->loadMigrationsFrom(__DIR__.'/path/to/migrations');
 
         //publico configuracion
         $config = __DIR__.'/Config/anicom.php';
@@ -35,9 +36,9 @@ class AnicomServiceProvider extends ServiceProvider
 
 
          //publico assets
-        $this->publishes([
-            __DIR__.'/public' => public_path('vendor/ajtarragona'),
-        ], 'ajtarragona-anicom-assets');
+        // $this->publishes([
+        //     __DIR__.'/public' => public_path('vendor/ajtarragona'),
+        // ], 'ajtarragona-anicom-assets');
 
 
 
@@ -52,7 +53,7 @@ class AnicomServiceProvider extends ServiceProvider
     public function register()
     {
        	//registro middleware
-        $this->app['router']->aliasMiddleware('anicom-backend', \Ajtarragona\Anicom\Middlewares\AnicomBackend::class);
+        // $this->app['router']->aliasMiddleware('anicom-backend', \Ajtarragona\Anicom\Middlewares\AnicomBackend::class);
 
         //defino facades
         $this->app->bind('anicom', function(){

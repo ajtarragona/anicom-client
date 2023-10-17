@@ -4,18 +4,20 @@ namespace Ajtarragona\Anicom\Models\Requests;
 
 use Ajtarragona\Anicom\Models\AnicomUpdateRequest;
 
-class ModificacioAnimal extends AnicomUpdateRequest 
+class ModificacioPropietari extends AnicomUpdateRequest 
 {
-    
-   
-    
-    public function __construct($id_animal,$variables=[])
+    protected $body_name="modificacio";
+
+
+
+        
+    public function __construct($id_propietari, $variables=[])
     {
 
         // dd($variables);
         $variables=array_merge($variables,[
-            'idPk'=>$id_animal."N",
-            'nivell'=>46932
+            'idPk'=>$id_propietari,
+            'nivell'=>1
         ]);
            
         parent::__construct($variables);

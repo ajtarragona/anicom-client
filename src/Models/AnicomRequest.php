@@ -22,7 +22,85 @@ abstract class AnicomRequest{
 		protected $config;
         protected $body_name="query";
         protected $xml_params=false;
-        protected $param_ids=[];
+       
+
+        protected $param_ids = [
+            'data_alta' => 157238,
+            'tip_identificacio' => 157245,
+            'identificacio' => 157246,
+            'identificacio_canvi' => 331565,
+            'lloc_marcatge' => 157247,
+            'especie' => 157248,
+            'sexe_animal' => 157249,
+            'mida' => 157250,
+            'data_naixement' => 157251,
+            'nom_animal' => 157252,
+            'num_placa' => 157253,
+            'esterilitzat' => 157254,
+            'origen' => 157255,
+            'raca' => 157258,
+            'varietat_raca' => 344565,
+            'raca_progenitor_1' => 157256,
+            'raca_progenitor_2' => 157257,
+            'perillos' => 157262,
+            'assistencia' => 157263,
+            'num_colegiat' => 157264,
+            'mateixa_adreca' => 157267,
+            'tipus_via_anim' => 157268,
+            'via_anim' => 157269,
+            'numero_anim' => 157270,
+            'bloc_anim' => 157271,
+            'escala_anim' => 157272,
+            'pis_anim' => 157273,
+            'porta_anim' => 157274,
+            'municipi_anim' => 157276,
+            'codi_postal_anim' => 157277,
+            'observacions_anim' => 157282,
+            'proteccio_dades' => 157513,
+            'canvi_prop' => 240223,
+            'data_baixa' => 157240,
+            'motiu_baixa' => 157243,
+            'acreditacio_mort' => 157241,
+            'reactivar_animal' => 335186,
+    
+            'tipus_persona' => 155479,
+            'tip_document' => 155447,
+            'document' => 9,
+            'nom' => 10,
+            'cognoms' => 11,
+            'rao_social' => 72,
+            'sexe' => 155448,
+            'tip_ident_repres' => 155449,
+            'ident_repres' => 47,
+            'nom_repres' => 41,
+            'cognoms_repres' => 42,
+            'ambit' => 155635,
+            'tipus_via' => 26,
+            'via' => 27,
+            'numero' => 157212,
+            'bloc' => 157166,
+            'escala' => 157167,
+            'pis' => 157168,
+            'porta' => 157169,
+            'municipi' => 33,
+            'municipi_esp' => 335844,
+            'codi_postal' => 157165,
+            'poblacio_ext' => 36,
+            'pais' => 37,
+            'telefon' => 43,
+            'telefon2' => 44,
+            'telefon3' => 45,
+            'email' => 49,
+            'email2' => 1,
+            'data_llicencia_gpp' => 75,
+            'major_18' => 78,
+            'observacions' => 68,
+            'adreca_completa' => 39,
+            'nom_complet' => 157019,
+            'nom_municipi' => 157021
+            
+        ];
+        
 
         public function __construct( $parametres=[])
         {
@@ -172,9 +250,10 @@ abstract class AnicomRequest{
                 
                 if(config('anicom.debug')){
                     Log::debug('ANICOM - Calling: '. $this->config['ws_url'] .":".$this->body_name);
-                    Log::debug('ANICOM - Params: '. $this->toXml());
+                    Log::debug('ANICOM - Params: '. json_encode($this->toParams(), JSON_PRETTY_PRINT));
+                    Log::debug('ANICOM - Params XML: '. $this->toXml());
                 }
-                dd($params, $this->toXml());
+                // dd($params, $this->toXml());
                 // dump($params);
                 // dd($params,$this->toXml());
                 $response = $client->__soapCall($this->body_name, $params );
@@ -193,6 +272,9 @@ abstract class AnicomRequest{
                     $errors=collect($errors)->pluck('missatge')->toArray();
                     $ret =  ["success" => false, "message" => $errors];
 
+                }else if ( $response->varArray ?? null){
+                    $return=$this->parseReturn($response->varArray);
+                    $ret = ["success" => true, "return" => $return];
                 }else if ( $response->varOcurrencies->varArray ?? null){
                     $return=$this->parseReturn($response->varOcurrencies->varArray);
                     $ret = ["success" => true, "return" => $return];

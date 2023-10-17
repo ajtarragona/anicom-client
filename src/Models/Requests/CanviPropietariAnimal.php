@@ -2,9 +2,11 @@
 
 namespace Ajtarragona\Anicom\Models\Requests;
 
+use Ajtarragona\Anicom\Models\AnicomStoreRequest;
+use Ajtarragona\Anicom\Models\AnicomUpdateRequest;
+use Carbon\Carbon;
 
-
-class CanviPropietariAnimal extends AltaAnimal
+class CanviPropietariAnimal extends AnicomStoreRequest
 {
 
     protected $extern_params=['nivell','idPkPare'];
@@ -13,12 +15,14 @@ class CanviPropietariAnimal extends AltaAnimal
     {
 
         $variables=[
-            'ident'=>$id_animal,
+            'data_alta' => Carbon::now()->format('d/m/Y'),
+            'identificacio_canvi'=>$id_animal,
             'canvi_prop'=>'S',
             'mateixa_adreca'=>'S',
             'proteccio_dades'=>'S',
             'idPkPare'=>$id_nou_prop,
             'nivell'=>46932
+            
             
         ];
            

@@ -9,6 +9,7 @@ use Ajtarragona\Anicom\Models\Requests\CanviPropietariAnimal;
 use Ajtarragona\Anicom\Models\Requests\ConsultaAnimal;
 use Ajtarragona\Anicom\Models\Requests\ConsultaPropietari;
 use Ajtarragona\Anicom\Models\Requests\ModificacioAnimal;
+use Ajtarragona\Anicom\Models\Requests\ModificacioPropietari;
 
 class AnicomProvider {
 	
@@ -46,7 +47,9 @@ class AnicomProvider {
 		return $ret->send();
 	}
 
-	public function modificacioPropietari($id_propietari){
+	public function modificacioPropietari($id_propietari,$variables=[]){
+		$ret= new ModificacioPropietari($id_propietari,$variables);
+		return $ret->send();
 	}
 
 	public function baixaAnimal($id_animal, $motiu=1,$data=null){
