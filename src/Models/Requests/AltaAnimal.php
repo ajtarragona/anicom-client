@@ -16,7 +16,7 @@ class AltaAnimal extends AnicomStoreRequest
     {
 
         // $example = [
-        //     'ident' => '123456789012345',    
+        //     'identificacio' => '123456789012345',    
         //     'lloc_marcatge' => 1,    
         //     'especie' => 1,    //Gos
         //     'sexe' => 1,    //mascle
