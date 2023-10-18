@@ -10,6 +10,7 @@ use Ajtarragona\Anicom\Models\Requests\ConsultaAnimal;
 use Ajtarragona\Anicom\Models\Requests\ConsultaPropietari;
 use Ajtarragona\Anicom\Models\Requests\ModificacioAnimal;
 use Ajtarragona\Anicom\Models\Requests\ModificacioPropietari;
+use Ajtarragona\Anicom\Models\Requests\RecuperaAnimal;
 
 class AnicomProvider {
 	
@@ -54,6 +55,10 @@ class AnicomProvider {
 
 	public function baixaAnimal($id_animal, $motiu=1,$data=null){
 		$ret= new BaixaAnimal($id_animal,$motiu,$data);
+		return $ret->send();
+	}
+	public function recuperaAnimal($id_animal){
+		$ret= new RecuperaAnimal($id_animal);
 		return $ret->send();
 	}
 

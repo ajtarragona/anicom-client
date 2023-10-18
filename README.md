@@ -115,6 +115,7 @@ Funció | Descripció | Paràmetres | Retorn
 **modificacioAnimal** | Modifica dades d'un animal | `string:$id_animal`, `array:$camps` |  Objecte animal
 **modificacioPropietari** | Modifica dades d'un propietari | `string:$id_propietari`, `array:$camps`|  Objecte propietari
 **baixaAnimal** | Dona de baixa un animal | `string:$id_animal`, `int:$motiu`, `data:$data_baixa` <br/>Veure [taula motius baixa](#taula_motius_baixa) | Missatge
+**recuperaAnimal** | Recupera un animal de baixa | `string:$id_animal` | Missatge
 
 <a name="camps_propietari"></a>
 ### Camps propietari
