@@ -114,8 +114,8 @@ Funció | Descripció | Paràmetres | Retorn
 **canviPropietari** | Canvia de propietari un animal, passant l'id dels dos | `string:$id_animal`,`string:$id_nou_prop`|  Objecte propietari
 **modificacioAnimal** | Modifica dades d'un animal | `string:$id_animal`, `array:$camps` |  Objecte animal
 **modificacioPropietari** | Modifica dades d'un propietari | `string:$id_propietari`, `array:$camps`|  Objecte propietari
-**baixaAnimal** | Dona de baixa un animal | `string:$id_animal`, `int:$motiu`, `data:$data_baixa` <br/>Veure [taula motius baixa](#taula_motius_baixa) | Missatge
-**recuperaAnimal** | Recupera un animal de baixa | `string:$id_animal` | Missatge
+**baixaAnimal** | Dona de baixa un animal | `string:$id_animal`, `int:$motiu`, `data:$data_baixa` <br/>Veure [taula motius baixa](#taula_motius_baixa) | Objecte animal
+**recuperaAnimal** | Recupera un animal de baixa | `string:$id_animal` | Objecte animal
 
 <a name="camps_propietari"></a>
 ### Camps propietari
