@@ -270,7 +270,7 @@ abstract class AnicomRequest{
                     if(!is_array($errors)) $errors=[$errors];
 
                     $errors=collect($errors)->pluck('missatge')->toArray();
-                    $ret =  ["success" => false, "message" => $errors];
+                    $ret =  ["success" => false, "message" => implode("\n",$errors)];
 
                 }else if ( $response->varArray ?? null){
                     $return=$this->parseReturn($response->varArray);
