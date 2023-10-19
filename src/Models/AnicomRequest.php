@@ -284,7 +284,11 @@ abstract class AnicomRequest{
                 }else{
                     // dump($response);
                     if($response->error->missatge??null){
-                        $ret = ["success" => false, 'codi'=>$response->error->codi??0, "message" => $response->error->missatge];
+                        $missatge=$response->error->missatge;
+
+                        if(is_array($missatge)) $missatge=implode("\n",$missatge);
+                        
+                        $ret = ["success" => false, 'codi'=>$response->error->codi??0, "message" => $missatge];
                     }else{
                         if(!isset($response->varOcurrencia) || (isset($response->varOcurrencia) && !isset($response->varOcurrencia->varArray))){
                             $ret =  ["success" => false, "message" => "No trobat"];
