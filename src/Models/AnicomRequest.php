@@ -60,7 +60,7 @@ abstract class AnicomRequest{
             'canvi_prop' => 240223,
             'data_baixa' => 157240,
             'motiu_baixa' => 157243,
-            'acreditacio_mort' => 157241,
+            'acreditacio_mort' => 147241,
             'reactivar_animal' => 335186,
     
             'tipus_persona' => 155479,
