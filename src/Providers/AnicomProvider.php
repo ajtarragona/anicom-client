@@ -3,6 +3,7 @@
 namespace Ajtarragona\Anicom\Providers;
 
 use Ajtarragona\Anicom\Models\Requests\AltaAnimal;
+use Ajtarragona\Anicom\Models\Requests\AltaAnimalIPropietari;
 use Ajtarragona\Anicom\Models\Requests\AltaPropietari;
 use Ajtarragona\Anicom\Models\Requests\BaixaAnimal;
 use Ajtarragona\Anicom\Models\Requests\CanviPropietariAnimal;
@@ -34,6 +35,11 @@ class AnicomProvider {
 
 	public function altaAnimal($parametres=[]){
 		$ret= new AltaAnimal($parametres);
+		return $ret->send();
+	}
+
+	public function altaAnimalIPropietari($dades_animal=[], $dades_propietari=[]){
+		$ret= new AltaAnimalIPropietari($dades_animal,$dades_propietari);
 		return $ret->send();
 	}
 

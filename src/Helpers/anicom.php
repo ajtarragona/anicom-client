@@ -7,8 +7,15 @@ if (! function_exists('anicom')) {
 }
 
 
-if (!function_exists('array_is_list')) {
-    function array_is_list(array $arr)
+if (!function_exists('array_is_a_list')) {
+    
+    /**
+     * Check if an array is a list (i.e., has sequential integer keys starting from 0).
+     *
+     * @param array $arr The array to check.
+     * @return bool True if the array is a list, false otherwise.
+     */
+    function array_is_a_list(array $arr)
     {
         if ($arr === []) {
             return true;

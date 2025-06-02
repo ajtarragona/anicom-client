@@ -41,5 +41,7 @@ class AltaAnimal extends AnicomStoreRequest
         // dd($variables);
            
         parent::__construct($variables);
+                // dd($this->toParams(),$this->toXml());
+
     }
 }

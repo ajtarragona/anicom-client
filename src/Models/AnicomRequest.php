@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use SoapClient;
 use XMLWriter;
 use Illuminate\Support\Str;
+use SimpleXMLElement;
 use SoapVar;
 
 abstract class AnicomRequest{
@@ -155,7 +156,75 @@ abstract class AnicomRequest{
         }
 
 
-        public function toXml($params=[],$open=true,$declaration=true){
+        protected function isCodiValor(array $item): bool
+        {
+            $keys = array_keys($item);
+            sort($keys);
+            return $keys === ['codi', 'valor'];
+        }
+
+
+        public function toXml($params = [], $open = true, $declaration = true)
+        {
+            if ($open) {
+                $this->xml = new XMLWriter();
+                $this->xml->openMemory();
+                if ($declaration) $this->xml->startDocument("1.0");
+            }
+
+            if (!$params) $params = $this->toParams();
+            // dd($params);
+            if(is_array($params)){
+                foreach ($params as $key => $value) {
+                  
+                    if (is_array($value)) {
+                        // dd($key, $value, array_is_list($value));
+                            $numericItems = array_filter($value, fn($k) => is_int($k), ARRAY_FILTER_USE_KEY);
+                            $assocItems = array_filter($value, fn($k) => is_string($k), ARRAY_FILTER_USE_KEY);
+                            // dd($key, $numericItems, $assocItems);
+                            // if($numericItems && $assocItems) dd($key,$numericItems, $assocItems);
+                            // if($key=="varArray") dd($numericItems, $assocItems);
+                            foreach ($numericItems as $item) {
+                                if (is_array($item) && $this->isCodiValor($item)) {
+                                    $this->addElement($key, null, $item);
+                                } else {
+                                    // dd($key);
+                                    $this->start($key);
+                                    $this->toXml($item, false, false);
+                                    $this->end();
+                                }
+                            }
+
+                            if($assocItems){
+                                if($numericItems){
+                                    foreach ($assocItems as $k2=>$item) {
+                                        // dd($key,$assocItems);
+                                        $this->start($k2);
+                                        $this->toXml($item, false, false);
+                                        $this->end();
+                                    }
+                                }else{
+                                    $this->start($key);
+                                    $this->toXml($assocItems, false, false);
+                                    $this->end();
+                                }
+                            }
+                        // }
+                    } else {
+                        $this->addElement($key, $value);
+                    }
+                }
+
+            }
+
+            if ($open) {
+                if ($declaration) $this->xml->endDocument();
+                return $this->xml->outputMemory();
+            }
+        }
+
+
+        public function toXmlOld($params=[],$open=true,$declaration=true){
 
             
             // $first=false;
@@ -167,17 +236,19 @@ abstract class AnicomRequest{
             }
             if(!$params) $params=$this->toParams();
 
-            
+            // dd($params);
             foreach($params as $key=>$value){
-              
                 if(is_array($value)){
-                    if(array_is_list($value)){
+                    //   dd($key,$value, array_is_list($value));
+
+                    if(array_is_a_list($value)){
                         foreach($value as $attributes){
                             $this->addElement($key,null,$attributes);
                         }
                     }else{
+
                         $this->start($key);
-                        $this->toXml($value,false);
+                        $this->toXmlOld($value,false);
                         $this->end();
                     }
                 }else{
@@ -249,9 +320,9 @@ abstract class AnicomRequest{
                 }
                 
                 if(config('anicom.debug')){
-                    Log::debug('ANICOM - Calling: '. $this->config['ws_url'] .":".$this->body_name);
-                    Log::debug('ANICOM - Params: '. json_encode($this->toParams(), JSON_PRETTY_PRINT));
-                    Log::debug('ANICOM - Params XML: '. $this->toXml());
+                    Log::debug("[ANICOM] Calling: ". $this->config['ws_url'] .":".$this->body_name);
+                    Log::debug("[ANICOM] Params:\n". json_encode($this->toParams(), JSON_PRETTY_PRINT));
+                    Log::debug("[ANICOM] Params XML:\n". $this->toXml());
                 }
                 // dd($params, $this->toXml());
                 // dump($params);
@@ -259,28 +330,38 @@ abstract class AnicomRequest{
                 $response = $client->__soapCall($this->body_name, $params );
                 
                 if(config('anicom.debug')){
-                    Log::debug('ANICOM - Response: '. json_encode($response, JSON_PRETTY_PRINT));
+                    Log::debug("[ANICOM] Response:\n". json_encode($response, JSON_PRETTY_PRINT));
 
                 }
                 // dd($response);
 
+                // $ret=[];
+                
+                // if(true)
+                    $ret=[
+                        "request" =>$this->config['ws_url'] .":".$this->body_name,
+                        "payload" => json_encode($this->toParams()),
+                        // "payload_xml" => $this->toXml(),
+                        "response" => json_encode($response)
+                    ];
 
+                    
                 if (isset($response->errors) && isset($response->errors->error)){
                     $errors=$response->errors->error;
                     if(!is_array($errors)) $errors=[$errors];
 
                     $errors=collect($errors)->pluck('missatge')->toArray();
-                    $ret =  ["success" => false, "message" => implode("\n",$errors)];
+                    $ret = array_merge( ["success" => false, "message" => implode("\n",$errors)], $ret);
 
                 }else if ( $response->varArray ?? null){
                     $return=$this->parseReturn($response->varArray);
-                    $ret = ["success" => true, "return" => $return];
+                    $ret = array_merge(["success" => true, "return" => $return], $ret);
                 }else if ( $response->varOcurrencies->varArray ?? null){
                     $return=$this->parseReturn($response->varOcurrencies->varArray);
-                    $ret = ["success" => true, "return" => $return];
+                    $ret = array_merge(["success" => true, "return" => $return], $ret);
                 }else if (($response->varOcurrencia->idOcurrencia??-1) > 0 && ($response->varOcurrencia->varArray ?? null) ){
                     $return=$this->parseReturn($response->varOcurrencia->varArray);
-                    $ret = ["success" => true, "return" => $return];
+                    $ret = array_merge(["success" => true, "return" => $return],    $ret);
                 }else{
                     // dump($response);
                     if($response->error->missatge??null){
@@ -288,12 +369,12 @@ abstract class AnicomRequest{
 
                         if(is_array($missatge)) $missatge=implode("\n",$missatge);
                         
-                        $ret = ["success" => false, 'codi'=>$response->error->codi??0, "message" => $missatge];
+                        $ret = array_merge(["success" => false, 'codi'=>$response->error->codi??0, "message" => $missatge], $ret);
                     }else{
                         if(!isset($response->varOcurrencia) || (isset($response->varOcurrencia) && !isset($response->varOcurrencia->varArray))){
-                            $ret =  ["success" => false, "message" => "No trobat"];
+                            $ret =  array_merge(["success" => false, "message" => "No trobat"], $ret);
                         }else{
-                            $ret =  ["success" => false, "message" => "Error ANICOM desconegut"];
+                            $ret =  array_merge(["success" => false, "message" => "Error ANICOM desconegut"], $ret);
                         }
                    }
                 }
@@ -301,11 +382,12 @@ abstract class AnicomRequest{
 
                 //dd($client->__getLastRequest());
             } catch(Exception $e) {
-                $ret = ["success" => false, "message" => $e->getMessage()];
+                // dd($e);
+                $ret = array_merge(["success" => false, "message" => $e->getMessage()], $ret);
             }
 
             
-            
+            // dd($ret);
             return json_decode(json_encode($ret),false);
         }
 }

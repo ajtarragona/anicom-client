@@ -11,6 +11,7 @@ class AnicomStoreRequest extends AnicomRequest{
         protected $xml_params=true;
 
         protected $extern_params=[];
+        protected $extra_params=[];
         
         public function __construct( $parametres=[] )
         {
@@ -27,6 +28,7 @@ class AnicomStoreRequest extends AnicomRequest{
                     ];
                 }
             }
+            if($this->extra_params) $params=array_merge($params, $this->extra_params);
 
             $ocurrencies =[
                 'varArray'=>$params,
@@ -51,7 +53,7 @@ class AnicomStoreRequest extends AnicomRequest{
 
           
        
-            // dd($ret);
+            // dump($ret);
 
             return $ret;
         }
