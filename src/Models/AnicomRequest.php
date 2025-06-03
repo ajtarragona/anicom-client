@@ -179,8 +179,19 @@ abstract class AnicomRequest{
                   
                     if (is_array($value)) {
                         // dd($key, $value, array_is_list($value));
-                            $numericItems = array_filter($value, fn($k) => is_int($k), ARRAY_FILTER_USE_KEY);
-                            $assocItems = array_filter($value, fn($k) => is_string($k), ARRAY_FILTER_USE_KEY);
+                            // $numericItems = array_filter($value, fn($k) => is_int($k), ARRAY_FILTER_USE_KEY);
+                            // $assocItems = array_filter($value, fn($k) => is_string($k), ARRAY_FILTER_USE_KEY);
+                            
+                            $numericItems = [];
+                            $assocItems = [];
+                            foreach ($value as $k => $v) {
+                                if (is_int($k)) {
+                                    $numericItems[$k] = $v;
+                                } elseif (is_string($k)) {
+                                    $assocItems[$k] = $v;
+                                }
+                            }
+
                             // dd($key, $numericItems, $assocItems);
                             // if($numericItems && $assocItems) dd($key,$numericItems, $assocItems);
                             // if($key=="varArray") dd($numericItems, $assocItems);
